@@ -4,7 +4,7 @@ import { Input, Card, Avatar, Button } from "antd";
 const Tweet = () => {
   const [title, setTitle] = useState("asdasd asas");
   const [comments, setComments] = useState([]);
-  const [phase1Status, setPhase1Status] = useState(true);
+  const [phase1Status, setPhase1Status] = useState(false);
   const [comment, setComment] = useState("");
 
   const handleTitleChange = (e) => {

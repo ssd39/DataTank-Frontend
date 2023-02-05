@@ -19,7 +19,7 @@ const Particle = ({ x, y, size }) => (
   />
 );
 
-function AnimatedButton() {
+function AnimatedButton({ onClickCB }) {
   const [hovered, setHovered] = useState(false);
   const buttonRef = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -68,6 +68,7 @@ function AnimatedButton() {
     }
     setParticles(newParticles);
     setLoading(true);
+    onClickCB()
   };
 
   return (

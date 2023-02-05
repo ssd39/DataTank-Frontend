@@ -7,12 +7,16 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Home from './Pages/Home';
+import Dashboard from './Pages/Dashboard';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />
-  },
+  },{
+    path: "/dashboard",
+    element: <Dashboard />
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

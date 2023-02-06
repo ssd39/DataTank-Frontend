@@ -12,7 +12,7 @@ function Home() {
   const handleConnectMetamask = async () => {
     setLoading(true);
     setTimeout(async () => {
-      try {
+      try { 
         // check if metamask is installed
         if (!window.ethereum) {
           throw new Error("Metamask is not installed");
@@ -54,6 +54,8 @@ function Home() {
             }
           }
         } else {
+
+          
           console.log("Network exsist!");
           navigate("/dashboard");
         }

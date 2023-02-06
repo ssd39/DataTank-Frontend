@@ -5,7 +5,6 @@ import { useLocation } from "react-router-dom";
 import { Input, Card, Avatar, Button,message } from "antd";
 import "./DetailProposal.css";
 import { useLocation } from "react-router-dom";
-import { ethers } from "ethers";
 import abi from "../contract.js"
 const {Web3} = (window);
 //import * as PushAPI from "@pushprotocol/restapi";

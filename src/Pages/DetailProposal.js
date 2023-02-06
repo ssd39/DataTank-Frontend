@@ -101,7 +101,7 @@ const DetailProposal = () => {
           >
             Sample Data
           </Button>
-          {location.state.proposer === window.ethereum.selectedAddress &&
+          {location.state.proposer == ethaddress &&
           phase1Status ? (
             <>
               <Button

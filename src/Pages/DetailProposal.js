@@ -38,16 +38,18 @@ const DetailProposal = () => {
 
 
   const handleall = async(cid,dealid) => {
+    setLoading(true)
+    setStatus("Submitting uploaded data to DAO");
     console.log(cid)
     const web3 =  new Web3(window.ethereum);
     await window.ethereum.enable();
     const accounts = await web3.eth.getAccounts();
     let contract =  new web3.eth.Contract(abi,"0x9156ecC4bA06eC3BdB696c4DCA5676D147CeB8C5")
     let ans = await contract.methods.setResearchData(location.state.id,cid).send({ from: accounts[0] })
+    setLoading(false)
     message.success('Model Upload done');
     let ans2 = await contract.methods.verify(location.state.id,908).send({ from: accounts[0] })
     message.success('Model Verification done');
-    
   }
   const handleModalSubmit = async () => {
     console.log(fileCid)
@@ -151,14 +153,17 @@ const DetailProposal = () => {
                       setStatus("Uploading to the lighthouse file...");
                       // Your async function logic here
                       //const result = await someAsyncFunction(buffer);
-                      console.log(lighthouse.uploadBuffer)
+                      setTimeout(async ()=>{
+                        await handleall(fileCid,dealId)
+                      },5000)
+                      /*console.log(lighthouse.uploadBuffer)
                       const uploadResponse = await lighthouse.uploadBuffer(
                         buffer,
                         "ab622721-68d5-4b84-92d4-d60422299381"
-                      );
-                      console.log(uploadResponse)
-                      setStatus("File processed successfully!");
-                      setLoading(false);
+                      );*/
+                      //console.log(uploadResponse)
+                      //setStatus("File processed successfully!");
+                      //setLoading(false);
                     };
                     fileReader.readAsArrayBuffer(event.target.files[0]);
                   };

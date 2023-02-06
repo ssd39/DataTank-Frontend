@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input, Card, Avatar, Button } from "antd";
 import "./DetailProposal.css"
+import { useLocation } from 'react-router-dom'; 
 
 const DetailProposal = () => {
-  const [title, setTitle] = useState("asdasd asas");
+  const [title, setTitle] = useState("");
   const [comments, setComments] = useState([]);
   const [phase1Status, setPhase1Status] = useState(false);
   const [phase2Status, setPhase2Status] = useState(false);
   const [uploadPhaseStatus, setUploadPhaseStatus] = useState(false);
-
+  const location = useLocation();
   const [comment, setComment] = useState("");
 
   const handleTitleChange = (e) => {
@@ -19,6 +20,10 @@ const DetailProposal = () => {
     setComments([...comments, comment]);
     setComment("");
   };
+
+  useEffect(() => {
+    setTitle(location.state.title)
+  },[location.state])
 
   return (
     <div className="p-8">

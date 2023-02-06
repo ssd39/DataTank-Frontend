@@ -2,12 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Card, Typography, Space } from "antd";
 import Skeleton from "react-loading-skeleton";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import "react-loading-skeleton/dist/skeleton.css";
 const { Title } = Typography;
 
 const ProposalCard = ({ proposal }) => {
-  const handleClick = () => {};
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if(proposal){
+      navigate("/proposal", { state: proposal });
+    }
+  };
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}

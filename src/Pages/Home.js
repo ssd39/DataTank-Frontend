@@ -19,15 +19,16 @@ function Home() {
       // connect to metamask
       await window.ethereum.enable();
       // check the current network
-      const network = await window.ethereum.networkVersion;
+      const network = window.ethereum.networkVersion;
       const targetNetwork = 3141
       if (network !== targetNetwork) {
         // check if filecoin hyperspace network is available
         try {
           await window.ethereum.request({
             method: "wallet_switchEthereumChain",
-            params: [{ chainId: window.web3.utils.toHex(targetNetwork) }],
+            params: [{ chainId: '0x' + targetNetwork.toString(16) }],
           });
+          navigate("/dashboard");
         } catch (err) {
           // This error code indicates that the chain has not been added to MetaMask
           if (err.code === 4902) {
@@ -36,7 +37,7 @@ function Home() {
               params: [
                 {
                   chainName: "Polygon Mainnet",
-                  chainId: window.web3.utils.toHex(targetNetwork),
+                  chainId: '0x' + targetNetwork.toString(16),
                   nativeCurrency: {
                     name: "Filecoin Hyperspace",
                     decimals: 18,
@@ -46,15 +47,15 @@ function Home() {
                 },
               ],
             });
+            navigate("/dashboard");
           } else {
             throw err
           }
         }
-      }
-      // navigate to dashboard
-      setTimeout(() => {
+      }else{
+        console.log('Network exsist!')
         navigate("/dashboard");
-      }, 1000);
+      }
     } catch (error) {
       message.error(error.message);
     } finally {

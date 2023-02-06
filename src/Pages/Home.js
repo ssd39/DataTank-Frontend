@@ -11,56 +11,58 @@ function Home() {
 
   const handleConnectMetamask = async () => {
     setLoading(true);
-    try {
-      // check if metamask is installed
-      if (!window.ethereum) {
-        throw new Error("Metamask is not installed");
-      }
-      // connect to metamask
-      await window.ethereum.enable();
-      // check the current network
-      const network = window.ethereum.networkVersion;
-      const targetNetwork = 3141
-      if (network !== targetNetwork) {
-        // check if filecoin hyperspace network is available
-        try {
-          await window.ethereum.request({
-            method: "wallet_switchEthereumChain",
-            params: [{ chainId: '0x' + targetNetwork.toString(16) }],
-          });
-          navigate("/dashboard");
-        } catch (err) {
-          // This error code indicates that the chain has not been added to MetaMask
-          if (err.code === 4902) {
+    setTimeout(async () => {
+      try {
+        // check if metamask is installed
+        if (!window.ethereum) {
+          throw new Error("Metamask is not installed");
+        }
+        // connect to metamask
+        await window.ethereum.enable();
+        // check the current network
+        const network = window.ethereum.networkVersion;
+        const targetNetwork = 3141;
+        if (network !== targetNetwork) {
+          // check if filecoin hyperspace network is available
+          try {
             await window.ethereum.request({
-              method: "wallet_addEthereumChain",
-              params: [
-                {
-                  chainName: "Polygon Mainnet",
-                  chainId: '0x' + targetNetwork.toString(16),
-                  nativeCurrency: {
-                    name: "Filecoin Hyperspace",
-                    decimals: 18,
-                    symbol: "tFIL",
-                  },
-                  rpcUrls: ["https://api.hyperspace.node.glif.io/rpc/v1"],
-                },
-              ],
+              method: "wallet_switchEthereumChain",
+              params: [{ chainId: "0x" + targetNetwork.toString(16) }],
             });
             navigate("/dashboard");
-          } else {
-            throw err
+          } catch (err) {
+            // This error code indicates that the chain has not been added to MetaMask
+            if (err.code === 4902) {
+              await window.ethereum.request({
+                method: "wallet_addEthereumChain",
+                params: [
+                  {
+                    chainName: "Polygon Mainnet",
+                    chainId: "0x" + targetNetwork.toString(16),
+                    nativeCurrency: {
+                      name: "Filecoin Hyperspace",
+                      decimals: 18,
+                      symbol: "tFIL",
+                    },
+                    rpcUrls: ["https://api.hyperspace.node.glif.io/rpc/v1"],
+                  },
+                ],
+              });
+              navigate("/dashboard");
+            } else {
+              throw err;
+            }
           }
+        } else {
+          console.log("Network exsist!");
+          navigate("/dashboard");
         }
-      }else{
-        console.log('Network exsist!')
-        navigate("/dashboard");
+      } catch (error) {
+        message.error(error.message);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      message.error(error.message);
-    } finally {
-      setLoading(false);
-    }
+    }, 2000);
   };
 
   return (

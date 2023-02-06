@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Input, Card, Avatar, Button } from "antd";
-import "./DetailProposal.css"
-import { useLocation } from 'react-router-dom'; 
+import "./DetailProposal.css";
+import { useLocation } from "react-router-dom";
+import { ethers } from "ethers";
+import * as PushAPI from "@pushprotocol/restapi";
 
 const DetailProposal = () => {
   const [title, setTitle] = useState("");
@@ -11,6 +13,30 @@ const DetailProposal = () => {
   const [uploadPhaseStatus, setUploadPhaseStatus] = useState(false);
   const location = useLocation();
   const [comment, setComment] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      const provider = new ethers.providers.Web3Provider(
+        window.ethereum,
+        "any"
+      );
+      let channelId = location.state.channelId
+
+      await provider.send("eth_requestAccounts", []);
+      const signer = provider.getSigner();
+      const subscriptions = await PushAPI.user.getSubscriptions({
+        user:`eip155:3141:${await signer.getAddress()}` , // user address in CAIP
+        env: "staging",
+      });
+      const isFound = subscriptions.filter(obj => {
+        return obj.channel === channelId 
+      })
+      console.log(isFound)
+      if(!isFound){
+
+      }
+    })();
+  }, []);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -22,19 +48,22 @@ const DetailProposal = () => {
   };
 
   useEffect(() => {
-    setTitle(location.state.title)
-  },[location.state])
+    setTitle(location.state.title);
+  }, [location.state]);
 
   return (
     <div className="p-8">
       <Card className="bg-white rounded-lg p-4">
         <h2 className="text-2xl font-bold mb-4">{title}</h2>
         <div className="flex mb-4">
-          <Button type="primary" className="p-2 btn-blue rounded-full flex justify-center py-2 items-center" >
+          <Button
+            type="primary"
+            className="p-2 btn-blue rounded-full flex justify-center py-2 items-center"
+          >
             Vote
           </Button>
           <Button
-          type="primary"
+            type="primary"
             className="p-2 btn-blue rounded-full ml-2 flex justify-center py-2 items-center"
             disabled
           >

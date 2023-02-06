@@ -1,8 +1,8 @@
 import React from "react";
 import { useSpring, animated } from "react-spring";
-import DetailProposal from "../Components/DetailProposal";
 import ProposalList from "../Components/ProposalList";
 import SubmitProposal from "../Components/SubmitProposal";
+
 const TabGroup = () => {
   const [activeTab, setActiveTab] = React.useState("Tab 1");
 
@@ -92,7 +92,6 @@ const TabGroup = () => {
       </animated.div>
     </div>
     {activeTab=="Tab 1"? <ProposalList/> :<></>}
-    {activeTab=="Tab 2"? <DetailProposal /> :<></>}
     {activeTab=="Tab 4"? <SubmitProposal/> :<></>}
     </div>
   );

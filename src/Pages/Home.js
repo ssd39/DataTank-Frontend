@@ -1,24 +1,76 @@
-import React from 'react';
-import AnimatedButton from '../Components/AnimatedButton';
-import AnimatedTitle from '../Components/AnimatedTitle';
-import Brush from '../Components/BackgroundBrush';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import AnimatedButton from "../Components/AnimatedButton";
+import AnimatedTitle from "../Components/AnimatedTitle";
+import Brush from "../Components/BackgroundBrush";
+import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 function Home() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+
+  const handleConnectMetamask = async () => {
+    setLoading(true);
+    try {
+      // check if metamask is installed
+      if (!window.ethereum) {
+        throw new Error("Metamask is not installed");
+      }
+      // connect to metamask
+      await window.ethereum.enable();
+      // check the current network
+      const network = await window.ethereum.networkVersion;
+      const targetNetwork = 3141
+      if (network !== targetNetwork) {
+        // check if filecoin hyperspace network is available
+        try {
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: window.web3.utils.toHex(targetNetwork) }],
+          });
+        } catch (err) {
+          // This error code indicates that the chain has not been added to MetaMask
+          if (err.code === 4902) {
+            await window.ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [
+                {
+                  chainName: "Polygon Mainnet",
+                  chainId: window.web3.utils.toHex(targetNetwork),
+                  nativeCurrency: {
+                    name: "Filecoin Hyperspace",
+                    decimals: 18,
+                    symbol: "tFIL",
+                  },
+                  rpcUrls: ["https://api.hyperspace.node.glif.io/rpc/v1"],
+                },
+              ],
+            });
+          } else {
+            throw err
+          }
+        }
+      }
+      // navigate to dashboard
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 1000);
+    } catch (error) {
+      message.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="App" className="flex flex-1 flex-col">
-      <div className='flex justify-end py-5 mx-3'>
-        <AnimatedButton onClickCB={()=>{
-            setTimeout(()=>{
-              navigate('/dashboard');
-            },1000)
-        }}/>
+      <div className="flex justify-end py-5 mx-3">
+        <AnimatedButton loadingST={loading} onClickCB={handleConnectMetamask} />
       </div>
-      <div className='absolute flex w-full' style={{top: "40%"}}>
-          <div className='flex-1'></div>
-          <AnimatedTitle  />
-          <div className='flex-1'></div>
+      <div className="absolute flex w-full" style={{ top: "40%" }}>
+        <div className="flex-1"></div>
+        <AnimatedTitle />
+        <div className="flex-1"></div>
       </div>
       <Brush />
     </div>

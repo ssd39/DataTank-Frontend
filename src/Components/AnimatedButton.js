@@ -11,7 +11,7 @@ const Particle = ({ x, y, size }) => (
       borderRadius: "50%",
       background: "#0074D9",
       backgroundImage: 'url("/filecoin.png")',
-      backgroundSize: 'contain',
+      backgroundSize: "contain",
       position: "absolute",
       top: y,
       left: x,
@@ -19,7 +19,7 @@ const Particle = ({ x, y, size }) => (
   />
 );
 
-function AnimatedButton({ onClickCB }) {
+function AnimatedButton({ onClickCB, loadingST }) {
   const [hovered, setHovered] = useState(false);
   const buttonRef = useRef(null);
   const [loading, setLoading] = useState(false);
@@ -50,11 +50,15 @@ function AnimatedButton({ onClickCB }) {
     return () => clearInterval(interval);
   }, [particles]);
 
-  const handleClick = (event) => {
+  useEffect(() => {
+    if(!loadingST){
+      setLoading(false);
+      return;
+    }
     const { x, y } = buttonRef.current.getBoundingClientRect();
     const h = buttonRef.current.clientHeight;
     const w = buttonRef.current.clientWidth;
-    setBtnHW({h, w})
+    setBtnHW({ h, w });
     const newParticles = [];
     for (let i = 0; i < w / 10; i++) {
       for (let j = 0; j < h / 10; j++) {
@@ -68,7 +72,10 @@ function AnimatedButton({ onClickCB }) {
     }
     setParticles(newParticles);
     setLoading(true);
-    onClickCB()
+  }, [loadingST]);
+
+  const handleClick = () => {
+    onClickCB();
   };
 
   return (
@@ -84,15 +91,18 @@ function AnimatedButton({ onClickCB }) {
         ))}
       </div>
       {loading ? (
-            <div style={{height: btnHW.h, width: btnHW.w}} className="flex items-center justify-center ">
-                <ClipLoader
-                color={"#ffffff"}
-                loading={true}
-                size={48}
-                aria-label="Loading Spinner"
-                data-testid="loader"
-                />
-            </div>
+        <div
+          style={{ height: btnHW.h, width: btnHW.w }}
+          className="flex items-center justify-center "
+        >
+          <ClipLoader
+            color={"#ffffff"}
+            loading={true}
+            size={48}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+          />
+        </div>
       ) : (
         <animated.div
           ref={buttonRef}

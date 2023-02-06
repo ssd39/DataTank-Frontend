@@ -97,6 +97,7 @@ function SubmitProposal() {
         </Form.Item>
         <Form.Item>
           <Button
+           type="primary"
             className="w-full flex justify-center py-2 items-center bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium rounded-lg "
             onClick={handleSubmit}
           >

@@ -24,8 +24,8 @@ const Brush = () => {
       setIsVisible(false)
       setTimeout(()=>{
         let newBrushLines = brushLines.map((brushLine) => {
-          brushLine.top = Math.random() * 90;
-          brushLine.left = Math.random() * 90;
+          brushLine.top = Math.random() * 70;
+          brushLine.left = Math.random() * 70;
           brushLine.width = Math.random() * 40 + 20;
           brushLine.height = Math.random() * 40 + 20;
           brushLine.color = `hsl(${Math.random() * 360}, 100%, 50%)`
@@ -36,7 +36,7 @@ const Brush = () => {
         setIsVisible(true)
       }, 500)
 
-    }, 3500);
+    }, 1500);
 
     return () => {
       clearInterval(interval);

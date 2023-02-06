@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { Input, Card, Avatar, Button } from "antd";
+import "./DetailProposal.css"
 
-const Tweet = () => {
+const DetailProposal = () => {
   const [title, setTitle] = useState("asdasd asas");
   const [comments, setComments] = useState([]);
   const [phase1Status, setPhase1Status] = useState(false);
+  const [phase2Status, setPhase2Status] = useState(false);
+  const [uploadPhaseStatus, setUploadPhaseStatus] = useState(false);
+
   const [comment, setComment] = useState("");
 
   const handleTitleChange = (e) => {
@@ -21,11 +25,12 @@ const Tweet = () => {
       <Card className="bg-white rounded-lg p-4">
         <h2 className="text-2xl font-bold mb-4">{title}</h2>
         <div className="flex mb-4">
-          <Button className="bg-blue-500 text-white p-2 rounded-full">
+          <Button type="primary" className="p-2 btn-blue rounded-full flex justify-center py-2 items-center" >
             Vote
           </Button>
           <Button
-            className="bg-gray-500 text-white p-2 rounded-full ml-2"
+          type="primary"
+            className="p-2 btn-blue rounded-full ml-2 flex justify-center py-2 items-center"
             disabled
           >
             Sample Data
@@ -48,7 +53,7 @@ const Tweet = () => {
             className="my-4 flex-1 border-solid border-dotted border-2 mx-2"
           />
           <div className="flex items-center">
-            {phase1Status ? (
+            {uploadPhaseStatus ? (
               <Avatar className="bg-green-500" size={24}>
                 2
               </Avatar>
@@ -62,7 +67,7 @@ const Tweet = () => {
             className="my-4 flex-1 border-solid border-dotted border-2 mx-2"
           />
           <div className="flex items-center">
-            {phase1Status ? (
+            {phase2Status ? (
               <Avatar className="bg-green-500" size={24}>
                 3
               </Avatar>
@@ -81,7 +86,8 @@ const Tweet = () => {
           />
           <Button
             onClick={handleAddComment}
-            className="bg-blue-500 text-white p-2 rounded-full"
+            type="primary"
+            className="p-2 btn-blue rounded-full flex justify-center py-2 items-center "
           >
             Add Comment
           </Button>
@@ -97,4 +103,4 @@ const Tweet = () => {
   );
 };
 
-export default Tweet;
+export default DetailProposal;

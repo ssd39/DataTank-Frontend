@@ -5,7 +5,7 @@ import { Web3Storage } from 'web3.storage'
 import abi from "../contract.js"
 
 import "./SubmitProposal.css";
-
+//bafybeibnpqpvzn3zf4rxpunhncztpyjtyrsr7vl54durbgdkidrqrg22xa    
 const {Web3} = (window);
 const tags = ["Financial Data", "Pollution Data", "Stock Data", "Health Data"];
 const web3storage = new Web3Storage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDM4MmM1N2I1M0VEOGY2MEMxMmQxOTE3MzZjMUQ5NWY1MUViZWZiMDMiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Mzc2MTY5MzMxNDIsIm5hbWUiOiJUaGV0YSJ9.8DpgeRXRcTyDAn-5IQYS6A0jA5oNQ--pC2ns0eDT7z8" })
@@ -34,7 +34,7 @@ function SubmitProposal() {
   };
 
   const createContract = (web3) => {
-    let contract =  new web3.eth.Contract(abi[abi],"0x11a63D80360936423B8ccf4e77300F9F925dD77f")
+    let contract =  new web3.eth.Contract(abi,"0x9156ecC4bA06eC3BdB696c4DCA5676D147CeB8C5")
     return contract;
   }
 
@@ -72,9 +72,11 @@ function SubmitProposal() {
     const proposalDataJson = JSON.stringify(proposalData);
 
     try {
-      const web3 =  new Web3(window.eth);
+     const web3 =  new Web3(window.ethereum);
+      await window.ethereum.enable();
       const result = makefile(proposalData);
       const proposalDataIpfsCID = await  web3storage.put(result);
+      console.log(proposalDataIpfsCID);
       const accounts = await web3.eth.getAccounts();
       let contract = await createContract(web3);
       let ans = await contract.methods.submitProposal(amount, proposalDataIpfsCID).send({ from: accounts[0] });

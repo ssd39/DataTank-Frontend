@@ -16,25 +16,12 @@ const DetailProposal = () => {
 
   useEffect(() => {
     (async () => {
-      const provider = new ethers.providers.Web3Provider(
+      /*const provider = new ethers.providers.Web3Provider(
         window.ethereum,
         "any"
-      );
-      let channelId = location.state.channelId
-
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      const subscriptions = await PushAPI.user.getSubscriptions({
-        user:`eip155:3141:${await signer.getAddress()}` , // user address in CAIP
-        env: "staging",
-      });
-      const isFound = subscriptions.filter(obj => {
-        return obj.channel === channelId 
-      })
-      console.log(isFound)
-      if(!isFound){
-
-      }
+      );*/
+      //await provider.send("eth_requestAccounts", []);
+      //const signer = provider.getSigner();
     })();
   }, []);
 

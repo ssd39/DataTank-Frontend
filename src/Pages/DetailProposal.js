@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Input, Card, Avatar, Button, Modal, Form } from "antd";
-import "./DetailProposal.css";
-import { useLocation } from "react-router-dom";
-import { Input, Card, Avatar, Button,message } from "antd";
+import { Input, Card, Avatar, Button, Modal, Form, message } from "antd";
 import "./DetailProposal.css";
 import { useLocation } from "react-router-dom";
 import abi from "../contract.js"

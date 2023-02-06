@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Input, Card, Avatar, Button } from "antd";
+import { Input, Card, Avatar, Button, Modal, Form } from "antd";
 import "./DetailProposal.css";
 import { useLocation } from "react-router-dom";
-import { ethers } from "ethers";
-import * as PushAPI from "@pushprotocol/restapi";
 
 const DetailProposal = () => {
   const [title, setTitle] = useState("");
@@ -13,7 +11,9 @@ const DetailProposal = () => {
   const [uploadPhaseStatus, setUploadPhaseStatus] = useState(false);
   const location = useLocation();
   const [comment, setComment] = useState("");
-
+  const [modalVisible, setModalVisible] = useState(false);
+  const [fileCid, setFileCid] = useState("");
+  const [dealId, setDealId] = useState("");
   useEffect(() => {
     (async () => {
       /*const provider = new ethers.providers.Web3Provider(
@@ -24,6 +24,14 @@ const DetailProposal = () => {
       //const signer = provider.getSigner();
     })();
   }, []);
+
+  const handleModalSubmit = () => {
+    // API call to upload data with fileCid and dealId values
+  };
+
+  const handleModal = () => {
+    setModalVisible(false)
+  }
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -56,6 +64,27 @@ const DetailProposal = () => {
           >
             Sample Data
           </Button>
+          {location.state.proposer === window.ethereum.selectedAddress &&
+          phase1Status ? (
+            <>
+              <Button
+                type="primary"
+                className="p-2 btn-blue rounded-full ml-2 flex justify-center py-2 items-center"
+                onClick={() => {}}
+              >
+                Upload with Powergate
+              </Button>
+              <Button
+                type="primary"
+                className="p-2 btn-blue rounded-full ml-2 flex justify-center py-2 items-center"
+                onClick={() => setModalVisible(true)}
+              >
+                Manual Upload
+              </Button>
+            </>
+          ) : (
+            <></>
+          )}
         </div>
         <hr size="10" className="my-4 border-solid border-dotted" />
         <div className="flex justify-between mb-4">
@@ -120,6 +149,40 @@ const DetailProposal = () => {
           </Card>
         ))}
       </Card>
+      <Modal
+        visible={modalVisible}
+        title="Submit The Data"
+        onOk={handleModalSubmit}
+        onCancel={handleModal}
+        footer={[
+          <div className="flex">
+                   <Button key="submit" type="primary" onClick={handleModalSubmit}   
+          className="p-2 btn-blue rounded-full flex justify-center py-2 items-center">
+            Submit
+          </Button>
+          <Button key="back" onClick={handleModal}  type="danger"
+          className="p-2 btn-blue rounded-full flex justify-center py-2 items-center">
+            Cancel
+          </Button>
+          </div>
+        ]}
+      >
+        <Form>
+          <Form.Item>
+            <Input
+              value={fileCid}
+              onChange={(e)=>setFileCid(e.value)}
+              placeholder="Data CID"
+            />
+            <Input
+              value={dealId}
+              className="mt-2"
+              onChange={(e)=>setDealId(e.value)}
+              placeholder="DealId"
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

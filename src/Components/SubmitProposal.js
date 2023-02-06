@@ -3,7 +3,7 @@ import { Form, Input, message, Button, Spin, Tag } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { Web3Storage } from 'web3.storage'
 import abi from "../contract.js"
-
+//import { ethers } from "ethers";
 import "./SubmitProposal.css";
 
 const {Web3} = (window);
@@ -68,8 +68,16 @@ function SubmitProposal() {
     }
     setLoading(true);
 
+    //let wallet = ethers.Wallet.createRandom(['21321'])
+    //window.comments_publickey = wallet.publicKey
+    //window.comments_privatekey = wallet.privateKey
+    
+    /*let user = await PushAPI.user.create({
+      "env": "staging",
+      "account": wallet.address
+    })
+    console.log(user)*/
     const proposalData = { title, tags };
-    const proposalDataJson = JSON.stringify(proposalData);
 
     try {
       const web3 =  new Web3(window.eth);

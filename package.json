@@ -7,7 +7,6 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "@web3-react/core": "^6.1.9",
     "antd": "^5.1.7",
     "d3-scale-chromatic": "^3.0.0",
     "ethers": "^5.7.2",

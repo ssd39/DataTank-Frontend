@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { Form, Input, message, Button, Spin, Tag } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { Web3Storage } from 'web3.storage'
+import abi from "../contract.js"
+
 import "./SubmitProposal.css";
 
+const {Web3} = (window);
 const tags = ["Financial Data", "Pollution Data", "Stock Data", "Health Data"];
+const web3storage = new Web3Storage({ token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDM4MmM1N2I1M0VEOGY2MEMxMmQxOTE3MzZjMUQ5NWY1MUViZWZiMDMiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Mzc2MTY5MzMxNDIsIm5hbWUiOiJUaGV0YSJ9.8DpgeRXRcTyDAn-5IQYS6A0jA5oNQ--pC2ns0eDT7z8" })
 
 function SubmitProposal() {
   const [amount, setAmount] = useState("");
@@ -28,6 +33,27 @@ function SubmitProposal() {
     setAmount(e.target.value);
   };
 
+  const createContract = (web3) => {
+    let contract =  new web3.eth.Contract(abi[abi],"0x11a63D80360936423B8ccf4e77300F9F925dD77f")
+    return contract;
+  }
+
+
+  const makefile = function makeFileObjects (obj) {
+    // You can create File objects from a Blob of binary data
+    // see: https://developer.mozilla.org/en-US/docs/Web/API/Blob
+    // Here we're just storing a JSON object, but you can store images,
+    // audio, or whatever you want!
+   
+    const blob = new Blob([JSON.stringify(obj)], { type: 'application/json' })
+  
+    const files = [
+      
+      new File([blob], 'proposal.json')
+    ]
+    return files
+  }
+
   const handleSubmit = async () => {
     if (!title) {
       return message.error("Title is required");
@@ -46,10 +72,12 @@ function SubmitProposal() {
     const proposalDataJson = JSON.stringify(proposalData);
 
     try {
-      /*const result = await ipfs.add(Buffer.from(proposalDataJson));
-      const proposalDataIpfsCID = result[0].hash;
+      const web3 =  new Web3(window.eth);
+      const result = makefile(proposalData);
+      const proposalDataIpfsCID = await  web3storage.put(result);
       const accounts = await web3.eth.getAccounts();
-      await Contract.methods.submitProposal(0, proposalDataIpfsCID).send({ from: accounts[0] });*/
+      let contract = await createContract(web3);
+      let ans = await contract.methods.submitProposal(amount, proposalDataIpfsCID).send({ from: accounts[0] });
       setLoading(false);
       message.success('Proposal submitted successfully!');
     } catch (err) {

@@ -30,8 +30,22 @@ const DetailProposal = () => {
     })();
   }, []);
 
-  const handleModalSubmit = () => {
-    // API call to upload data with fileCid and dealId values
+
+  const handleall = async(cid,dealid) => {
+    console.log(cid)
+    const web3 =  new Web3(window.ethereum);
+    await window.ethereum.enable();
+    const accounts = await web3.eth.getAccounts();
+    let contract =  new web3.eth.Contract(abi,"0x9156ecC4bA06eC3BdB696c4DCA5676D147CeB8C5")
+    let ans = await contract.methods.setResearchData(location.state.id,cid).send({ from: accounts[0] })
+    message.success('Model Upload done');
+    let ans2 = await contract.methods.verify(location.state.id,908).send({ from: accounts[0] })
+    message.success('Model Verification done');
+    
+  }
+  const handleModalSubmit = async () => {
+    console.log(fileCid)
+    await handleall(fileCid,dealId)
   };
 
   const handleModal = () => {
@@ -60,7 +74,7 @@ const DetailProposal = () => {
       let ans = await contract.methods.vote(location.state.id).send({ from: accounts[0] });
       
     }
-    message.success('Proposal submitted successfully!');
+    message.success('Vote Successfully done');
 
 
 
@@ -97,7 +111,7 @@ const DetailProposal = () => {
           <Button
             type="primary"
             className="p-2 btn-blue rounded-full ml-2 flex justify-center py-2 items-center"
-            disabled={!((ethaddress == location.state.proposer) && (phase1Status && !dealverified))}
+            disabled={!dealverified}
           >
             Sample Data
           </Button>
